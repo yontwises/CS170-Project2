@@ -5,6 +5,7 @@
 #include <limits>
 #include <cmath>
 #include <algorithm>
+#include <chrono> 
 
 using namespace std; 
 
@@ -56,6 +57,7 @@ double leave_one_out_cross_validation(vector<vector<double>> data,vector<int> fe
 }
 
 void forward_Selection(vector<vector<double>> data) {
+    auto start = std::chrono::high_resolution_clock::now();
     vector<int> current_set_of_features;   //initial empty set 
     vector<int> final_set;
     double top_Accuracy = 0.0; //best accuracy for all levels in the tree
@@ -115,6 +117,9 @@ void forward_Selection(vector<vector<double>> data) {
         cout << final_set.at(x) << ", ";
     }          
     cout << "} which has an accuracy of " << top_Accuracy << "%" << endl;
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop-start);
+    cout << duration.count() << endl; 
 }
 
 //returns index of node to be deleted
@@ -131,6 +136,8 @@ int deleteFeature(vector<int> vec, int feature) {
 //similar to forward selection but you start with a set full of features and then eliminate 
 void backwardElimnation(vector<vector<double>> data, double all_features_Accuracy) {
     //populate a vector full of features 
+    auto start = std::chrono::high_resolution_clock::now();
+    
     double top_Accuracy = all_features_Accuracy;
     double accuracy = 0.0;
     vector<int> current_set_of_features;
@@ -196,6 +203,9 @@ void backwardElimnation(vector<vector<double>> data, double all_features_Accurac
         cout << final_set.at(x) << ", ";
     }          
     cout << "} which has an accuracy of " << top_Accuracy << "%" << endl;
+    auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop-start);
+    cout << duration.count() << endl; 
 }
 int main() {
     string fileName; 
